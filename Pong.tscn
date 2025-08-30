@@ -1,0 +1,110 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct0vw30ao65qb"]
+
+[ext_resource type="Script" uid="uid://db1o26n11v4jc" path="res://pong.gd" id="1_8ypyn"]
+[ext_resource type="PackedScene" uid="uid://dqesflb4rkm1i" path="res://player_paddle.tscn" id="1_ofbcb"]
+[ext_resource type="PackedScene" uid="uid://n1s7bsnt8cpv" path="res://ball.tscn" id="2_2fpx0"]
+[ext_resource type="PackedScene" uid="uid://dj4bbivif6akl" path="res://court.tscn" id="3_dsgnr"]
+[ext_resource type="PackedScene" uid="uid://v0arondgeucp" path="res://opponent_paddle.tscn" id="5_hultk"]
+[ext_resource type="AudioStream" uid="uid://bptnjkk7b6sor" path="res://point_scored_sound.mp3" id="6_6v0xx"]
+[ext_resource type="Script" uid="uid://cibqcqh0bk04b" path="res://pause_node.gd" id="7_i04b0"]
+
+[node name="Pong" type="Node2D"]
+script = ExtResource("1_8ypyn")
+
+[node name="GameArea" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.787838, 0.579935, 0.484147, 1)
+
+[node name="BallStartingPoint" type="Node2D" parent="GameArea"]
+unique_name_in_owner = true
+position = Vector2(573, 320)
+
+[node name="Label" type="Label" parent="GameArea"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -99.5
+offset_top = -40.0
+offset_right = 99.5
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.384314, 0.156863, 0.0823529, 1)
+theme_override_font_sizes/font_size = 20
+text = "Press 'Ctrl' to pause game"
+
+[node name="Court" parent="." instance=ExtResource("3_dsgnr")]
+position = Vector2(573, 320)
+
+[node name="PlayerPaddle" parent="." instance=ExtResource("1_ofbcb")]
+unique_name_in_owner = true
+position = Vector2(1003, 289)
+
+[node name="Ball" parent="." instance=ExtResource("2_2fpx0")]
+unique_name_in_owner = true
+position = Vector2(575, 321)
+
+[node name="OpponentPoints" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 120.0
+offset_top = 590.0
+offset_right = 160.0
+offset_bottom = 645.0
+theme_override_colors/font_color = Color(0.382685, 0.155383, 0.0824861, 1)
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="PlayerPoints" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 1020.0
+offset_top = 590.0
+offset_right = 1060.0
+offset_bottom = 645.0
+theme_override_colors/font_color = Color(0.384314, 0.156863, 0.0823529, 1)
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="OpponentPaddle" parent="." instance=ExtResource("5_hultk")]
+unique_name_in_owner = true
+position = Vector2(156, 298)
+
+[node name="PointScoredSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_6v0xx")
+
+[node name="PauseMenu" type="ColorRect" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.454902, 0.380392, 0.576471, 0.443137)
+
+[node name="Label" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.480928, 0.726824, 0.995134, 1)
+theme_override_font_sizes/font_size = 40
+text = "Press 'Space' to reset
+
+Press 'Ctrl' to unpause"
+
+[node name="PauseNode" type="Node" parent="."]
+process_mode = 2
+script = ExtResource("7_i04b0")
+
+[connection signal="point_scored" from="Court" to="." method="_on_court_point_scored"]
